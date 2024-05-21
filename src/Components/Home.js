@@ -1,39 +1,35 @@
-// src/pages/HomePage.js
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import Carousel from './carousel';
+import React from 'react';
+import MyCarousel from './carousel';
 
-const HomePage = ({ isAuthenticated }) => {
-  const [songs, setSongs] = useState([]);
-
-  useEffect(() => {
-    const fetchSongs = async () => {
-      const result = await axios.get('https://academics.newtonschool.co/api/v1/musicx/song?limit=30&featured=Trending%20songs', {
-        headers: {
-          projectID: 'bng7dtu7whwk',
-        },
-      });
-      setSongs(result.data.data);
-    };
-
-    fetchSongs();
-  }, []);
-
-  const handlePlay = (songId) => {
-    if (!isAuthenticated) {
-      alert('Please log in to play songs.');
-      return;
-    }
-    const audio = new Audio(`https://academics.newtonschool.co/api/v1/musicx/song/${songId}/play`);
-    audio.play();
-  };
-
+const HomePage = () => {
   return (
-    <div className="mt-16 p-4">
-      <Carousel songs={songs} handlePlay={handlePlay} />
+    <div className='mt-20 bg-[#E9E7E7]'>
+      <MyCarousel 
+        title="Trending Songs" 
+        api="https://academics.newtonschool.co/api/v1/musicx/song?featured=Trending%20songs" 
+      />
+      <MyCarousel 
+        title="Romantic" 
+        api="https://academics.newtonschool.co/api/v1/musicx/song?mood=romantic" 
+      />
+      <MyCarousel 
+        title="Happy" 
+        api="https://academics.newtonschool.co/api/v1/musicx/song?mood=happy" 
+      />
+      <MyCarousel 
+        title="Excited" 
+        api="https://academics.newtonschool.co/api/v1/musicx/song?mood=excited" 
+      />
+      <MyCarousel 
+        title="Sad" 
+        api="https://academics.newtonschool.co/api/v1/musicx/song?mood=sad" 
+      />
+      <MyCarousel 
+        title="Top 20 of this week" 
+        api="https://academics.newtonschool.co/api/v1/musicx/song?top+20+the+week" 
+      />
     </div>
   );
 };
 
 export default HomePage;
-

@@ -1,23 +1,44 @@
-// src/components/Carousel.js
-import React from 'react';
-import SongTile from './songtitele';
+import React, { useEffect, useState } from "react";
+import { Carousel } from 'primereact/carousel';
+import 'primereact/resources/themes/saga-blue/theme.css';
+import 'primereact/resources/primereact.min.css';
 
-const Carousel = ({ songs, handlePlay }) => {
-  return (
-    <div className="relative">
-      <div className="flex overflow-x-scroll space-x-4 p-4">
-        {songs.map((song) => (
-          <SongTile key={song._id} song={song} handlePlay={handlePlay} />
-        ))}
+const MyCarousel = ({ title, api }) => {
+  const [songs, setSongs] = useState([]);
+
+  useEffect(() => {
+    const fetchSongs = async () => {
+      try {
+        const response = await fetch(api, {
+          headers: {
+            projectId: "bng7dtu7whwk",
+          }
+        });
+        const data = await response.json();
+        setSongs(data.data || []);
+      } catch (error) {
+        console.error('Error fetching songs:', error);
+      }
+    };
+
+    fetchSongs();
+  }, [api]);
+
+  const songTemplate = (song) => {
+    return (
+      <div className="border-1 surface-border border-round m-2 py-5 px-3">
+        <img src={song.thumbnail} alt={song.title} className="w-60 shadow rounded" />
+        <h4 className="font-medium pt-3">{song.title}</h4>
       </div>
-      <button className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded">
-        {'<'}
-      </button>
-      <button className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded">
-        {'>'}
-      </button>
+    );
+  };
+
+  return (
+    <div className="bg-white m-10">
+      <h1 className="font-semibold text-3xl pl-5 pt-5">{title}</h1>
+      <Carousel value={songs} numVisible={6} numScroll={3} itemTemplate={songTemplate} />
     </div>
   );
 };
 
-export default Carousel;
+export default MyCarousel;

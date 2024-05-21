@@ -1,4 +1,3 @@
-// src/components/SongTile.js
 import React, { useState } from 'react';
 
 const SongTile = ({ song, handlePlay }) => {
