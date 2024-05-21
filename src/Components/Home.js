@@ -1,13 +1,17 @@
 import React from 'react';
 import MyCarousel from './carousel';
-
+import Navbar from './navigationbar';
 const HomePage = () => {
   return (
-    <div className='mt-20 bg-[#E9E7E7]'>
+    <div className='mt-20 bg-black'>
+      <Navbar/>
       <MyCarousel 
-        title="Trending Songs" 
+      
+        title="Trending Songs " 
         api="https://academics.newtonschool.co/api/v1/musicx/song?featured=Trending%20songs" 
       />
+      
+      
       <MyCarousel 
         title="Romantic" 
         api="https://academics.newtonschool.co/api/v1/musicx/song?mood=romantic" 
