@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import { Link } from "react-router-dom";
-
+import { useAuth } from "./AuthContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const nav = useNavigate();
+  const navigate = useNavigate();
+  const { setAuth } = useAuth(); // Use the custom hook to get the setAuth function
+  const projectId = 'bng7dtu7whwk';
 
   const handleSubmit = async (e) => {
-    
     e.preventDefault();
     try {
       const response = await fetch('https://academics.newtonschool.co/api/v1/user/login', {
         method: 'POST',
         headers: {
           'accept': 'application/json',
-          'projectID': 'bng7dtu7whwk',
+          'projectId': projectId,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -26,12 +27,15 @@ const Login = () => {
         })
       });
 
-
-    const data = await response.json();
-    if(data.status === "success"){
-      nav("/home");
-    }
-      
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem('user', JSON.stringify(data)); // Save user data to local storage
+        setAuth(data.token); // Set the token in the context
+        navigate("/");
+        alert('Sign in successful');
+      } else {
+        setError(data.message || 'Sign in failed');
+      }
     } catch (error) {
       console.error('Error during login:', error);
       setError('An error occurred. Please try again.');

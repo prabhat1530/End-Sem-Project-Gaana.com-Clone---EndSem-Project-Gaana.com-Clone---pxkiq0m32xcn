@@ -1,17 +1,15 @@
 import React from 'react';
-import MyCarousel from './carousel';
-import Navbar from './navigationbar';
+import MyCarousel from './MyCarousel';
+import Navbar from './Navbar';
+
 const HomePage = () => {
   return (
-    <div className='mt-20 bg-black'>
-      <Navbar/>
+    <div className=' bg-black'>
+      <Navbar />
       <MyCarousel 
-      
-        title="Trending Songs " 
+        title="Trending Songs" 
         api="https://academics.newtonschool.co/api/v1/musicx/song?featured=Trending%20songs" 
       />
-      
-      
       <MyCarousel 
         title="Romantic" 
         api="https://academics.newtonschool.co/api/v1/musicx/song?mood=romantic" 
@@ -30,7 +28,11 @@ const HomePage = () => {
       />
       <MyCarousel 
         title="Top 20 of this week" 
-        api="https://academics.newtonschool.co/api/v1/musicx/song?top+20+the+week" 
+        api="https://academics.newtonschool.co/api/v1/musicx/song?featured=Top+20+of+this+week" 
+      />
+      <MyCarousel 
+        title="Top 50 of this month" 
+        api="https://academics.newtonschool.co/api/v1/musicx/song?featured=Top+50+of+this+month" 
       />
     </div>
   );
