@@ -6,7 +6,6 @@ import SongTile from './SongTitle';
 
 const MyCarousel = ({ title, api }) => {
   const [songs, setSongs] = useState([]);
-  console.log(title,api)
 
   useEffect(() => {
     const fetchSongs = async () => {
@@ -34,10 +33,37 @@ const MyCarousel = ({ title, api }) => {
     );
   };
 
+  // Responsive settings for the carousel
+  const responsiveOptions = [
+    {
+      breakpoint: '1024px', // for tablets and small laptops
+      numVisible: 3,
+      numScroll: 3,
+    },
+    {
+      breakpoint: '768px', // for smaller tablets and large phones
+      numVisible: 2,
+      numScroll: 2,
+    },
+    {
+      breakpoint: '560px', // for mobile phones
+      numVisible: 1,
+      numScroll: 1,
+    },
+  ];
+
   return (
     <div className="bg-black text-white m-10">
       <h1 className="font-semibold text-3xl pl-5 pt-5">{title}</h1>
-      <Carousel value={songs} numVisible={6} numScroll={3} itemTemplate={songTemplate} />
+      <Carousel 
+        value={songs} 
+        itemTemplate={songTemplate} 
+        numVisible={5} 
+        numScroll={3} 
+        responsiveOptions={responsiveOptions} 
+        circular 
+        autoplayInterval={3000}
+      />
     </div>
   );
 };

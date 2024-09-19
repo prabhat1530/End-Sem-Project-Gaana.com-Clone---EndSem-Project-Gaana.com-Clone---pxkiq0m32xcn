@@ -5,13 +5,13 @@ import { useAuth } from './AuthContext';
 import { useNavigate } from "react-router-dom"; // Import the custom hook
 
 const SongTitle = ({ song }) => {
-    // console.log(song)
     const navigate = useNavigate();
     const { _id, title, thumbnail, artist } = song;
     const [isPlaying, setIsPlaying] = useState(false);
     const [audioUrl, setAudioUrl] = useState(null);
     const audioRef = useRef(new Audio());
     const { auth: jwtToken } = useAuth(); // Get the token from the context
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const handlePauseAll = (event) => {
@@ -44,7 +44,7 @@ const SongTitle = ({ song }) => {
     const getArtistNames = () => {
         return artist.map(artist => artist.name).join(', ');
     };
-    
+
     const fetchSongDetails = async () => {
         try {
             const response = await fetch(`https://academics.newtonschool.co/api/v1/musicx/song/${_id}`, {
@@ -64,7 +64,9 @@ const SongTitle = ({ song }) => {
 
     const handlePlayPause = async () => {
         if (!audioUrl) {
+            setLoading(true);
             await fetchSongDetails();
+            setLoading(false);
             return; // Return here to prevent playing audio before URL is fetched
         }
 
@@ -73,7 +75,7 @@ const SongTitle = ({ song }) => {
         } else {
             const event = new CustomEvent('pauseAll', { detail: { audioId: _id } });
             window.dispatchEvent(event);
-            
+
             audioRef.current.src = audioUrl; // Set source immediately
             audioRef.current.play(); // Play audio immediately
         }
@@ -81,16 +83,26 @@ const SongTitle = ({ song }) => {
     };
 
     return (
-        <div className="p-2 m-1">
-            <div className="flex-col items-center w-48">
-                <img src={thumbnail} alt={title} className="h-42 w-42 rounded-2xl my-4" />
-                <h3 className="text-lg font-normal truncate">{title}</h3>
-                <p className="text-gray-500 text-xs truncate">{getArtistNames()}</p>
-                <FontAwesomeIcon
-                    className="relative left-36 bottom-24 bg-transparent size-7 ml-3 cursor-pointer"
-                    icon={isPlaying ? faCirclePause : faCirclePlay}
-                    onClick={handlePlayPause}
+        <div className="p-2 m-1 w-full sm:w-48">
+            <div className="flex flex-col items-center">
+                <img
+                    src={thumbnail}
+                    alt={title}
+                    className="h-42 w-42 rounded-2xl my-4 object-cover"
                 />
+                <h3 className="text-lg font-normal truncate text-center">{title}</h3>
+                <p className="text-gray-500 text-xs truncate text-center">
+                    {getArtistNames()}
+                </p>
+                {loading ? (
+                    <>Loading...</>
+                ) : (
+                    <FontAwesomeIcon
+                        className="relative left-20 bottom-10 sm:left-36 sm:bottom-24 bg-transparent text-4xl sm:text-5xl cursor-pointer"
+                        icon={isPlaying ? faCirclePause : faCirclePlay}
+                        onClick={handlePlayPause}
+                    />
+                )}
             </div>
         </div>
     );

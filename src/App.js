@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./Components/AuthContext";
 import HomePage from "./Components/Home";
 
+
 const router = createBrowserRouter([
   {
     path: "/signup",
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
   },
   {
     path:"/",
-    element: <HomePage/>
+    element: <HomePage />
   }
   
   

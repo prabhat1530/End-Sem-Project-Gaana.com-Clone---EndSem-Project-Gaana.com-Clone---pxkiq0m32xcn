@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { Link } from "react-router-dom";
 import { useAuth } from "./AuthContext";
+import image from '../../src/assets/image.png';
+import logo from '../../src/assets/image copy.png'
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +30,7 @@ const Login = () => {
       });
 
       const data = await response.json();
-      if (response.ok) {
+      if (data.status === "success") {
         localStorage.setItem('user', JSON.stringify(data)); // Save user data to local storage
         setAuth(data.token); // Set the token in the context
         navigate("/");
@@ -43,27 +45,27 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center w-fu min-h-screen bg-black">
-      <div className="ml-16 mt-20 w-5/6 h-[600px] bg-background bg-cover p-8">
-        <div className="flex justify-center mt-16">
-          <img
-            src="https://s3-alpha-sig.figma.com/img/e033/f421/1fedf1b427e06d6f538b0af651bea421?Expires=1716768000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=FIo~mwAo2yCOOIeY5h5qDpZ0JdpH0EINpbA-vcZziHr0gxlhXHxpkjqxcNvdO9PpBiTwSf3HDVuuKCKgt2QBY-3EFD5PqlV4YDjeQFlb23z7jmZLOKk1Yixjg7dBmz1mWesTVeQefE407UWpZFyoENQemdvH~3Lb1ibv8EhiRq2iKLqomVV~KXWBYFJbsx~hgbHSlMBPMZHdESgUoXZ9s13QoEZAs45tOem7UrzMCyQk1g~h~XpyrKhEsj404nKjq1oSRKbKhH52FLWUiHUczQCedS6SYf5Nu49dZ1vYGo~ZVxRXAOF1TBO~U12YA9zmTpulAVsmWdybsM9twzyW1g__"
-            alt="logo"
-          />
+    <div className="flex justify-center items-center min-h-screen bg-black opacity-95" style={{ backgroundImage: `url(${image})`, backgroundSize: 'cover' }}>
+      <div className="w-full max-w-md md:max-w-lg lg:max-w-xl bg-background bg-cover p-8">
+        <div className="flex justify-center mt-4">
+          <img height={30} width={90} src={logo} alt="logo" />
         </div>
         <br />
-
         <div className="login-container">
           <form className="login-form" onSubmit={handleSubmit}>
-            <h1 className="flex justify-center text-white">Listen to Gaana Non-Stop</h1>
+            <h1 className="flex justify-center text-white text-lg md:text-2xl">Listen to Gaana Non-Stop</h1>
             <br />
-            <h2 className="flex justify-center text-red-500">Login</h2>
+            <h2 className="flex justify-center text-red-500 text-base md:text-xl">Login</h2>
             <br />
-            {error && <p className="flex justify-center text-red-500">{error}</p>}
+            {error && (
+              <div className="flex justify-center text-red-600 text-sm md:text-base">
+                <p>{error}</p>
+              </div>
+            )}
             <div className="flex justify-center">
               <input
                 type="email"
-                className="bg-black border-2 border-red-600 text-white"
+                className="bg-black border-2 border-red-600 text-white p-2 w-64 md:w-80"
                 value={email}
                 placeholder="Email"
                 onChange={(e) => setEmail(e.target.value)}
@@ -74,7 +76,7 @@ const Login = () => {
             <div className="flex justify-center">
               <input
                 type="password"
-                className="bg-black border-2 border-red-600 text-white"
+                className="bg-black border-2 border-red-600 text-white p-2 w-64 md:w-80"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -83,23 +85,20 @@ const Login = () => {
             </div>
             <br />
             <div className="flex justify-center">
-              <button
-                className="w-24 m-2.5 p-2.5 bg-red-700 text-white"
-                type="submit"
-              >
+              <button className="w-24 m-2.5 p-2.5 bg-red-700 text-white" type="submit">
                 Log In
               </button>
             </div>
             <br />
-            <div className="flex">
+            <div className="flex flex-col items-center md:flex-row md:justify-center">
               <h3 className="p-2 text-white">Don't have an account?</h3>
-              <a href="/signup" className="ml-3 mt-2 text-red-600 underline">Create In</a>
+              <a href="/signup" className="ml-0 md:ml-3 mt-2 text-red-600 underline">Create One</a>
             </div>
           </form>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Login;

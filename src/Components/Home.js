@@ -5,7 +5,7 @@ import Navbar from './Navbar';
 const HomePage = () => {
   return (
     <div className=' bg-black'>
-      <Navbar />
+      <Navbar/>
       <MyCarousel 
         title="Trending Songs" 
         api="https://academics.newtonschool.co/api/v1/musicx/song?featured=Trending%20songs" 
